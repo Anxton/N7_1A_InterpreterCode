@@ -14,15 +14,15 @@ begin
         Pass_Tokens : constant T_Tokens := Lexer.Tokenize(Pass_Line);
     begin
         pragma Assert (Assign_Tokens.InstructionType = Lexer.Assign);
-        pragma Assert (Assign_Tokens.Operands (1) = "x");
-        pragma Assert (Assign_Tokens.Operands (2) = "42");
+        pragma Assert (Assign_Tokens.Arguments (1) = "x");
+        pragma Assert (Assign_Tokens.Arguments (2) = "42");
 
         pragma Assert (Jump_Tokens.InstructionType = Lexer.Jump);
-        pragma Assert (Jump_Tokens.Operands (1) = "L2");
+        pragma Assert (Jump_Tokens.Arguments (1) = "L2");
 
         pragma Assert (ConditionalJump_Tokens.InstructionType = Lexer.ConditionalJump);
-        pragma Assert (ConditionalJump_Tokens.Operands (1) = "x");
-        pragma Assert (ConditionalJump_Tokens.Operands (2) = "L2");
+        pragma Assert (ConditionalJump_Tokens.Arguments (1) = "x");
+        pragma Assert (ConditionalJump_Tokens.Arguments (2) = "L2");
 
         pragma Assert (Pass_Tokens.InstructionType = Lexer.Pass);
     end;
