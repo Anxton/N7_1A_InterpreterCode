@@ -1,7 +1,5 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-package Context is
-
-    type T_Context is private;
+package body Context is
 
     -- Initialise la mémoire du contexte d'exécution
     -- Doit être appelé avant toute autre opération sur Context
@@ -17,7 +15,10 @@ package Context is
     --
     -- Exemples :
     --   Voir tests
-    procedure Initialize (Context : out T_Context);
+    procedure Initialize (Context : out T_Context) is
+    begin
+        Context.List_Integer := null;
+    end Initialize;
 
     -- Lit la valeur d'une variable dans le contexte d'exécution
     --
@@ -34,8 +35,17 @@ package Context is
     --
     -- Exemples :
     --   Voir tests
-    function ReadVariable (Context : in T_Context; VariableName : in String) return Integer with
-       Pre => True, Post => True;
+    function ReadVariable (Context : in T_Context; VariableName : in String) return Integer is
+        Node : A_LinkedList_Integer := Context.List_Integer;
+    begin
+        while Node /= null loop
+            if Node.Key = To_Unbounded_String (VariableName) then
+                return Node.Value;
+            end if;
+            Node := Node.Next;
+        end loop;
+        raise Program_Error;
+    end ReadVariable;
 
     -- Ecrit la valeur d'une variable dans le contexte d'exécution
     --
@@ -52,22 +62,18 @@ package Context is
     --
     -- Exemples :
     --   Voir tests
-    procedure WriteVariable (Context : in out T_Context; VariableName : in String; Value : in Integer) with
-       Pre => True, Post => ReadVariable (Context, VariableName) = Value;
-
-private
-    type LinkedList_Integer;
-
-    type A_LinkedList_Integer is access LinkedList_Integer;
-
-    type LinkedList_Integer is record
-        Key   : Unbounded_String;
-        Value : Integer;
-        Next  : A_LinkedList_Integer;
-    end record;
-
-    type T_Context is record
-        List_Integer : A_LinkedList_Integer;
-    end record;
+    procedure WriteVariable (Context : in out T_Context; VariableName : in String; Value : in Integer) is
+        Node : A_LinkedList_Integer := Context.List_Integer;
+    begin
+        while Node /= null loop
+            if Node.Key = To_Unbounded_String (VariableName) then
+                Node.Value := Value;
+                return;
+            end if;
+            Node := Node.Next;
+        end loop;
+        Node := new LinkedList_Integer'(Key => To_Unbounded_String (VariableName), Value => Value, Next => Context.List_Integer);
+        Context.List_Integer := Node;
+    end WriteVariable;
 
 end Context;
