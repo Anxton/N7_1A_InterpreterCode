@@ -1,4 +1,4 @@
-package body stringutils is
+package body StringUtils is
 
     function Split (Line : in String) return Split_String is
         Lower_Bound : Integer := Line'First;
@@ -30,4 +30,4 @@ package body stringutils is
         end;
     end Split;
 
-end stringutils;
+end StringUtils;

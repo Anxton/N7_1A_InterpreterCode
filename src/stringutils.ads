@@ -1,5 +1,5 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-package stringutils is
+package StringUtils is
 
     type Split_String is array (Natural range <>) of Unbounded_String;
 
@@ -18,4 +18,4 @@ package stringutils is
             Pre => Line /= "",
             Post => Split'Result (1) /= "";
 
-end stringutils;
+end StringUtils;
