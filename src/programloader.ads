@@ -1,7 +1,8 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package ProgramLoader is
-    type T_Program is array (Natural range <>) of Unbounded_String;
+   type T_Program is array (Natural range <>) of Unbounded_String;
+   type P_Program is access T_Program;
 
     -- Charge un fichier dans un tableau de cha�nes de caract�res
     --

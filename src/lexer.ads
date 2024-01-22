@@ -1,7 +1,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package Lexer is
-    type T_InstructionType is (Assign, Jump, ConditionalJump, Pass);
+    type T_InstructionType is (Assign, AssignEval, Jump, ConditionalJump, Pass);
     type T_Arguments is array (1 .. 4) of Unbounded_String;
    
     type T_Tokens is record
