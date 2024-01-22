@@ -1,4 +1,5 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Unchecked_Deallocation;
 package Context is
 
     type T_Context is private;
@@ -34,8 +35,7 @@ package Context is
     --
     -- Exemples :
     --   Voir tests
-    function ReadVariable (Context : in T_Context; VariableName : in String) return Integer with
-       Pre => True, Post => True;
+    function ReadVariable (Context : in T_Context; VariableName : in String) return Integer;
 
     -- Ecrit la valeur d'une variable dans le contexte d'exécution
     --
@@ -53,21 +53,40 @@ package Context is
     -- Exemples :
     --   Voir tests
     procedure WriteVariable (Context : in out T_Context; VariableName : in String; Value : in Integer) with
-       Pre => True, Post => ReadVariable (Context, VariableName) = Value;
+            Pre => True, Post => ReadVariable (Context, VariableName) = Value;
+
+    -- Libère la mémoire du contexte d'exécution
+    -- Doit être appelé lorsque le contexte n'est plus utilisé
+    --
+    -- Paramètres :
+    --   Context : le contexte d'exécution à libérer
+    --
+    -- Nécessite :
+    --   Context a été initialisé
+    --
+    -- Assure :
+    --   Vrai
+    --
+    -- Exemples :
+    --   Voir tests
+    procedure Destroy (Context : in out T_Context);
 
 private
-    type LinkedList_Integer;
 
-    type A_LinkedList_Integer is access LinkedList_Integer;
+    type Node_Integer;
 
-    type LinkedList_Integer is record
+    type A_Node_Integer is access Node_Integer;
+
+    type Node_Integer is record
         Key   : Unbounded_String;
         Value : Integer;
-        Next  : A_LinkedList_Integer;
+        Next  : A_Node_Integer;
     end record;
 
+    procedure Free is new Ada.Unchecked_Deallocation (Node_Integer, A_Node_Integer);
+
     type T_Context is record
-        List_Integer : A_LinkedList_Integer;
+        List_Integer : A_Node_Integer;
     end record;
 
 end Context;
