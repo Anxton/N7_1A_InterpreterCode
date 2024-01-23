@@ -4,7 +4,7 @@ package ProgramLoader is
    type T_Program is array (Natural range <>) of Unbounded_String;
    type P_Program is access T_Program;
 
-    -- Charge un fichier dans un tableau de cha�nes de caract�res
+    -- Charge un fichier dans un tableau de chaînes de caractères
     --
     -- Paramètres :
     --      Source : chemin du fichier à charger
@@ -18,5 +18,5 @@ package ProgramLoader is
     --
     -- Exemples :
     --   Voir tests
-    function LoadFile(Source: String) return T_Program;
+    function LoadFile (Source: String) return T_Program;
 end ProgramLoader;
