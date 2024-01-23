@@ -9,7 +9,10 @@ package body ProgramLoader is
     function IsProgramLine (ProgramLine : Unbounded_String) return Boolean is
         Split_Line : constant Split_String := Split (To_String (ProgramLine));
     begin
-        if Split_Line (1) /= "--" and then Split_Line (1) /= "" then
+        if Split_Line (1) /= "--" and then Split_Line (1) /= ""
+           and then Split_Line (1) /= "Programme"
+           and then Split_Line (1) /= "Début" and then Split_Line (1) /= "Fin"
+        then
             return True;
         else
             return False;
