@@ -3,19 +3,17 @@ package StringUtils is
 
     type Split_String is array (Natural range <>) of Unbounded_String;
 
-    -- Sépare une ligne de code en 6 chaînes de caractères
+    -- Sépare une chaîne de caractères en une liste de chaînes de caractères par l'espace
     -- Paramètres :
-    --   Line : ligne de code à séparer
+    --   Line : Chaîne de caractères à séparer
     -- Résultat :
-    --   Tableau de 6 chaînes de caractères
+    --   Tableau plein de chaînes de caractères
     -- Nécessite :
-    --   Line est une ligne de code valide
+    --   Vrai
     -- Assure :
     --   Vrai
     -- Exemple :
     --   Voir tests
-    function Split (Line : in String) return Split_String with
-            Pre => Line /= "",
-            Post => Split'Result (1) /= "";
+    function Split (Line : in String) return Split_String;
 
 end StringUtils;
