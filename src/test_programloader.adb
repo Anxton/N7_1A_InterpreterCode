@@ -28,6 +28,11 @@ begin
     --  GOTO L1
     --  L2 NULL
     --  Fin
+
+        for I in 1 .. Program'Length loop
+            Put_Line (To_String (Program (I)));
+        end loop;
+
         pragma Assert (Program'Length = 19);
         pragma Assert (Program (1) = "Programme Facto est");
         pragma Assert (Program (2) = "n, i, Fact, T1, T2, T3 : Entier");
@@ -48,8 +53,5 @@ begin
         pragma Assert (Program (17) = "GOTO 10");
         pragma Assert (Program (18) = "NULL");
         pragma Assert (Program (19) = "Fin");
-        for I in 1 .. Program'Length loop
-            Put_Line (To_String (Program (I)));
-        end loop;
     end;
 end Test_ProgramLoader;

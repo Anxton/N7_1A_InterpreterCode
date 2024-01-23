@@ -41,7 +41,6 @@ package body ProgramLoader is
             get_line (File, ProgramLine);
 
             if IsProgramLine (ProgramLine) then
-                Put_Line (To_String (ProgramLine));
                 Program_Length := Program_Length + 1;
             end if;
 
