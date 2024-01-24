@@ -18,5 +18,4 @@ package ProgramLoader is
     --
     -- Exemples :
     --   Voir tests
-    function LoadFile(Source: String) return T_Program;
 end ProgramLoader;

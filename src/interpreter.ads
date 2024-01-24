@@ -1,8 +1,6 @@
 with Context; use Context;
 with ProgramLoader; use ProgramLoader;
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 package Interpreter is
 
     -- Lance l'interpréteur en mode normal
