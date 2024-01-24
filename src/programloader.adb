@@ -16,7 +16,7 @@ package body ProgramLoader is
         if Split_Line (1) /= "--" and then Split_Line (1) /= ""
            and then Split_Line (1) /= "Programme"
            and then Split_Line (1) /= "Début" and then Split_Line (1) /= "Fin"
-           and then Split_Line'Last'Pred /= ":"
+           and then Split_Line (Split_Line'Length-1) /= ":"
         then
             return True;
         else
