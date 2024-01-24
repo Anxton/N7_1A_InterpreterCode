@@ -75,6 +75,20 @@ package body Context is
         Context.List_Integer := Node;
     end WriteVariable;
 
+    -- Libère la mémoire du contexte d'exécution
+    -- Doit être appelé lorsque le contexte n'est plus utilisé
+    --
+    -- Paramètres :
+    --   Context : le contexte d'exécution à libérer
+    --
+    -- Nécessite :
+    --   Context a été initialisé
+    --
+    -- Assure :
+    --   Vrai
+    --
+    -- Exemples :
+    --   Voir tests
     procedure Destroy (Context : in out T_Context) is
         Node : A_Node_Integer := Context.List_Integer;
     begin

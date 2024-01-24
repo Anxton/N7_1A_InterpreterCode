@@ -5,13 +5,18 @@ with Ada.Text_IO;                   use Ada.Text_IO;
 
 package body ProgramLoader is
 
-    -- Filtrer les commentaires et lignes vides
+    -- Filtrer les lignes de programme
+    --  On ne garde que les lignes qui ne sont pas des commentaires
+    --  et qui ne sont pas vides
+    --  et qui ne sont pas des mots clés
+    --  et qui ne sont pas des declarations de variables
     function IsProgramLine (ProgramLine : Unbounded_String) return Boolean is
         Split_Line : constant Split_String := Split (To_String (ProgramLine));
     begin
         if Split_Line (1) /= "--" and then Split_Line (1) /= ""
            and then Split_Line (1) /= "Programme"
            and then Split_Line (1) /= "Début" and then Split_Line (1) /= "Fin"
+           and then Split_Line'Last'Pred /= ":"
         then
             return True;
         else
