@@ -1,4 +1,3 @@
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package body Context is
 
     -- Initialise la mémoire du contexte d'exécution
@@ -36,7 +35,7 @@ package body Context is
     -- Exemples :
     --   Voir tests
     function ReadVariable (Context : in T_Context; VariableName : in String) return Integer is
-        Node : A_LinkedList_Integer := Context.List_Integer;
+        Node : A_Node_Integer := Context.List_Integer;
     begin
         while Node /= null loop
             if Node.Key = To_Unbounded_String (VariableName) then
@@ -63,7 +62,7 @@ package body Context is
     -- Exemples :
     --   Voir tests
     procedure WriteVariable (Context : in out T_Context; VariableName : in String; Value : in Integer) is
-        Node : A_LinkedList_Integer := Context.List_Integer;
+        Node : A_Node_Integer := Context.List_Integer;
     begin
         while Node /= null loop
             if Node.Key = To_Unbounded_String (VariableName) then
@@ -72,8 +71,18 @@ package body Context is
             end if;
             Node := Node.Next;
         end loop;
-        Node := new LinkedList_Integer'(Key => To_Unbounded_String (VariableName), Value => Value, Next => Context.List_Integer);
+        Node := new Node_Integer'(Key => To_Unbounded_String (VariableName), Value => Value, Next => Context.List_Integer);
         Context.List_Integer := Node;
     end WriteVariable;
+
+    procedure Destroy (Context : in out T_Context) is
+        Node : A_Node_Integer := Context.List_Integer;
+    begin
+        while Node /= null loop
+            Context.List_Integer := Node.Next;
+            Free (Node);
+            Node := Context.List_Integer;
+        end loop;
+    end Destroy;
 
 end Context;

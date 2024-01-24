@@ -1,4 +1,4 @@
-with stringutils; use stringutils;
+with StringUtils; use StringUtils;
 package body Lexer is   
     -- Tokenize une ligne de code en un token
     --
