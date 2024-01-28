@@ -29,5 +29,7 @@ begin
     Put_Line("Var1 = " & Value'Image);
     pragma Assert (Value = 18);
 
-    Destroy (Ctx);
+    Display(Ctx);
+
+    Destroy(Ctx);
 end Test_Context;

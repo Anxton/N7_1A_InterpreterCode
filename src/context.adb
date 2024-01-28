@@ -1,3 +1,5 @@
+with Ada.Text_IO; use Ada.Text_IO;
+
 package body Context is
 
     -- Initialise la mémoire du contexte d'exécution
@@ -97,6 +99,18 @@ package body Context is
             Free (Node);
             Node := Context.List_Integer;
         end loop;
-    end Destroy;
+   end Destroy;
+
+
+   procedure Display(Context: in T_Context) is
+      Node: A_Node_Integer := Context.List_Integer;
+      NodeNumber: Integer := 1;
+   begin
+      while Node /= null loop
+         Put_Line(Integer'Image(NodeNumber) & ':' & To_String(Node.Key) & " -> " & Integer'Image(ReadVariable(Context, To_String(Node.Key))));
+         Node := Node.Next;
+         NodeNumber := NodeNumber + 1;
+   end loop;
+   end Display;
 
 end Context;

@@ -1,5 +1,4 @@
 with Context; use Context;
-with ProgramLoader; use ProgramLoader;
 
 package Interpreter is
 
@@ -36,12 +35,10 @@ package Interpreter is
     procedure RunDebug (FilePath : in String);
 
 private
-    type P_Program is access T_Program;
 
     type T_Interpreter is record
         PC: Integer;
         --  Invariant: 1 <= PC <= A_Program'Length
         Context: T_Context;
-        Program: P_Program;
     end record;
 end Interpreter;

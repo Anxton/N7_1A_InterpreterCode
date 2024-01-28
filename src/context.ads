@@ -69,7 +69,23 @@ package Context is
     --
     -- Exemples :
     --   Voir tests
-    procedure Destroy (Context : in out T_Context);
+   procedure Destroy (Context : in out T_Context);
+
+
+    -- Affiche le contenu de la liste chaînée du contexte d'exécution
+    --
+    -- Paramètres :
+    --   Context : le contexte d'exécution
+    --
+    -- Nécessite :
+    --   Context a été initialisé
+    --
+    -- Assure :
+    --   Vrai
+    --
+    -- Exemples :
+    --   Voir tests
+   procedure Display(Context: in T_Context);
 
 private
 

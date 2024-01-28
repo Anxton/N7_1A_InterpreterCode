@@ -1,35 +1,16 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Lexer; use Lexer;
+with ProgramLoader; use ProgramLoader;
 
 package body Interpreter is
    
    procedure Initialize(Interpreter: out T_Interpreter) is
-      Program: T_Program(1..15);
    begin
       Interpreter.PC := 1;
-      Interpreter.Program := new T_Program(1..15);
-         
-      Program(1) :=  To_Unbounded_String("n <- 10");
-      Program(2) := To_Unbounded_String("i <- 1");
-      Program(3) := To_Unbounded_String("Fact <- 1");
-      Program(4) := To_Unbounded_String("T1 <- i < n");
-      Program(5) := To_Unbounded_String("T2 <- i = n");
-      Program(6) := To_Unbounded_String("T3 <- T1 OR T2");
-      Program(7) := To_Unbounded_String("IF T3 GOTO 9");
-      Program(8) := To_Unbounded_String("GOTO 15");
-      Program(9) := To_Unbounded_String("Fact <- Fact * i");
-      Program(10) := To_Unbounded_String("i <- i + 1");
-      Program(11) := To_Unbounded_String("T1 <- i < n");
-      Program(12) := To_Unbounded_String("T2 <- i = n");
-      Program(13) := To_Unbounded_String("T3 <- T1 OR T2");
-      Program(14) := To_Unbounded_String("GOTO 7");
-      Program(15) := To_Unbounded_String("NULL");
-      
-      
-      Interpreter.Program.all := Program;
    end Initialize;
    
+   -- Check if a given string represents a numeric value
    function Is_Numeric(Item: String) return Boolean is
       Dummy: Integer;
    begin
@@ -42,6 +23,7 @@ package body Interpreter is
       end;
    end Is_Numeric;
    
+   -- Get the value of an operand, which can be either a numeric constant or a variable
    function GetOperandValue(Interpreter: T_Interpreter; Operand: String) return Integer is
    begin
       if Is_Numeric(Operand) then
@@ -81,6 +63,8 @@ package body Interpreter is
       SecondOperand: constant Integer := GetOperandValue(Interpreter, To_String(Arguments(4)));
    begin
       if Operator = "OR" then
+         -- Here the operands need to be converted to Boolean to apply logical OR. 
+         -- We then check if the operands are greater than 0, if this is the case, they will be replaced by True, otherwise by False.
          WriteVariable(Interpreter.Context, To_String(Arguments(1)), Boolean'Pos((FirstOperand > 0) OR (SecondOperand > 0)));
       elsif Operator = "AND" then
          WriteVariable(Interpreter.Context, To_String(Arguments(1)), Boolean'Pos((FirstOperand > 0) AND (SecondOperand > 0)));
@@ -100,7 +84,6 @@ package body Interpreter is
          WriteVariable(Interpreter.Context, To_String(Arguments(1)), FirstOperand / SecondOperand);
       end if;
 
-
       Interpreter.PC := Interpreter.PC + 1;
    end PerformAssignEval;
    
@@ -116,33 +99,82 @@ package body Interpreter is
       end case;
    end ExecuteInstruction;
 
-  
+   -- Lance l'interpréteur en mode normal
+    --
+    -- Paramètres :
+    --   FilePath : le chemin du fichier source à interpréter
+    --
+    --  Nécessite :
+    --    FilePath est un chemin valide
+    --    le fichier source est valide
+    --
+    --  Assure :
+    --    Vrai
+    --
+    -- Exemples :
+    --   Voir tests
    procedure RunNormal (FilePath : in String) is
       Interpreter : T_Interpreter;
+      Program: constant T_Program := LoadFile (FilePath);
       Program_Lines_Number: Integer;
       Current_Line: Unbounded_String;
       Current_Line_Tokens: T_Tokens;
-      ReadValue: Integer;
    begin
       Initialize(Interpreter);
       
-      Program_Lines_Number := Interpreter.Program.all'Length;
+      Program_Lines_Number := Program'Length;
       
       while Interpreter.PC < Program_Lines_Number loop
-         Current_Line := Interpreter.Program.all(Interpreter.PC);
+         Current_Line := Program(Interpreter.PC);
          Current_Line_Tokens := Lexer.Tokenize(To_String(Current_Line));
          
          ExecuteInstruction(Interpreter, Current_Line_Tokens);
       end loop;
-      
-      ReadValue := ReadVariable(Interpreter.Context, "Fact");
-      Put_Line(Integer'Image(ReadValue));
+     
+      Destroy(Interpreter.Context);
    end RunNormal;
    
+   -- Lancer l'interpréteur en mode debug
+    --
+    -- Paramètres :
+    --   FilePath : le chemin du fichier source à interpréter
+    --
+    --  Nécessite :
+    --    FilePath est un chemin valide
+    --    le fichier source est valide
+    --
+    --  Assure :
+    --    Vrai
+    --
+    -- Exemples :
+    --   Voir tests
    procedure RunDebug(FilePath : in String) is
+      Interpreter : T_Interpreter;
+      Program: constant T_Program := LoadFile (FilePath);
+      Program_Lines_Number: Integer;
+      Current_Line: Unbounded_String;
+      Current_Line_Tokens: T_Tokens;
    begin
-      Put_Line(FilePath);
-      return;
+      Put_Line("# DEBUG MODE #");
+      
+      Initialize(Interpreter);
+      
+      Program_Lines_Number := Program'Length;
+      
+      while Interpreter.PC <= Program_Lines_Number loop
+         Put_Line("Program Counter:" & Integer'Image(Interpreter.PC + 1));
+         Display(Interpreter.Context);
+         
+         Current_Line := Program(Interpreter.PC);
+         Current_Line_Tokens := Lexer.Tokenize(To_String(Current_Line));
+         
+         ExecuteInstruction(Interpreter, Current_Line_Tokens);         
+         
+         Put_Line("-----");
+      end loop;
+     
+      Destroy(Interpreter.Context);
+      
    end RunDebug;
    
                                    
