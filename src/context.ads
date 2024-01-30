@@ -72,13 +72,13 @@ package Context is
    procedure Destroy (Context : in out T_Context);
 
 
-    -- Affiche le contenu de la liste chaînée du contexte d'exécution
+    -- Affiche le contenu de la liste chaÃ®nÃ©e du contexte d'exÃ©cution
     --
-    -- Paramètres :
-    --   Context : le contexte d'exécution
+    -- ParamÃ¨tres :
+    --   Context : le contexte d'exÃ©cution
     --
-    -- Nécessite :
-    --   Context a été initialisé
+    -- NÃ©cessite :
+    --   Context a Ã©tÃ© initialisÃ©
     --
     -- Assure :
     --   Vrai

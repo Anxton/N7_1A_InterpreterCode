@@ -24,20 +24,6 @@ package body ProgramLoader is
         end if;
     end IsProgramLine;
 
-    -- Charge un fichier dans un tableau de chaînes de caractères
-    --
-    -- Paramètres :
-    --      Source : chemin du fichier à charger
-    --
-    -- Nécessite :
-    --   Source est un fichier existant
-    --
-    -- Assure :
-    --   LoadFile renvoie un tableau de chaînes de caractères contenant
-    --   le contenu du fichier Source
-    --
-    -- Exemples :
-    --   Voir tests
     function LoadFile (Source : String) return T_Program is
         File           : File_Type;
         ProgramLine    : Unbounded_String;
